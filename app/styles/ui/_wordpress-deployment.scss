@@ -1,0 +1,294 @@
+// WordPress Deployment Manager Styles
+
+.wordpress-deployment-manager {
+  min-width: 700px;
+  max-width: 900px;
+
+  .deployment-progress {
+    margin-bottom: var(--spacing-double);
+    padding: var(--spacing);
+    background-color: var(--box-alt-background-color);
+    border-radius: var(--border-radius);
+
+    .progress-bar {
+      height: 8px;
+      background-color: var(--box-border-color);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: var(--spacing);
+
+      .progress-fill {
+        height: 100%;
+        background-color: var(--button-background);
+        transition: width 0.3s ease;
+      }
+    }
+
+    .progress-message {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary-color);
+    }
+  }
+
+  .quick-deploy-section {
+    margin-bottom: var(--spacing-double);
+    text-align: center;
+
+    .quick-deploy-button {
+      padding: var(--spacing) var(--spacing-double);
+      font-size: var(--font-size-md);
+      
+      .octicon {
+        margin-right: var(--spacing-half);
+      }
+    }
+  }
+
+  .environments-section {
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing);
+
+      h3 {
+        font-size: var(--font-size);
+        font-weight: var(--font-weight-semibold);
+        margin: 0;
+      }
+    }
+
+    .add-environment-form {
+      background-color: var(--box-alt-background-color);
+      border: 1px solid var(--box-border-color);
+      border-radius: var(--border-radius);
+      padding: var(--spacing);
+      margin-bottom: var(--spacing);
+
+      h4 {
+        margin-top: 0;
+        margin-bottom: var(--spacing);
+        font-size: var(--font-size);
+        font-weight: var(--font-weight-semibold);
+        color: var(--text-secondary-color);
+      }
+
+      .form-row {
+        margin-bottom: var(--spacing);
+
+        label {
+          display: block;
+          margin-bottom: var(--spacing-half);
+          font-size: var(--font-size-sm);
+          font-weight: var(--font-weight-semibold);
+        }
+
+        select {
+          width: 100%;
+          padding: var(--spacing-half);
+          border: 1px solid var(--box-border-color);
+          border-radius: var(--border-radius);
+          background-color: var(--background-color);
+          font-size: var(--font-size);
+        }
+
+        &.two-columns {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          gap: var(--spacing);
+        }
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--spacing);
+        margin-top: var(--spacing);
+      }
+    }
+
+    .no-environments {
+      text-align: center;
+      padding: var(--spacing-double);
+      color: var(--text-secondary-color);
+      font-style: italic;
+      border: 1px dashed var(--box-border-color);
+      border-radius: var(--border-radius);
+    }
+
+    .environments-list {
+      .environment-card {
+        border: 1px solid var(--box-border-color);
+        border-radius: var(--border-radius);
+        margin-bottom: var(--spacing);
+        overflow: hidden;
+        cursor: pointer;
+        transition: border-color 0.2s ease;
+
+        &:hover {
+          border-color: var(--button-background);
+        }
+
+        &.selected {
+          border-color: var(--button-background);
+          box-shadow: 0 0 0 2px var(--button-background-alpha);
+        }
+
+        &.production {
+          border-left: 4px solid #dc3545;
+        }
+
+        &.staging {
+          border-left: 4px solid #ffc107;
+        }
+
+        &.development {
+          border-left: 4px solid #28a745;
+        }
+
+        .environment-header {
+          display: flex;
+          align-items: center;
+          gap: var(--spacing);
+          padding: var(--spacing);
+
+          .environment-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--border-radius);
+            background-color: var(--box-alt-background-color);
+
+            &.production {
+              background-color: rgba(220, 53, 69, 0.1);
+              color: #dc3545;
+            }
+
+            &.staging {
+              background-color: rgba(255, 193, 7, 0.1);
+              color: #ffc107;
+            }
+
+            &.development {
+              background-color: rgba(40, 167, 69, 0.1);
+              color: #28a745;
+            }
+          }
+
+          .environment-info {
+            flex: 1;
+
+            .environment-name {
+              display: flex;
+              align-items: center;
+              gap: var(--spacing-half);
+              font-weight: var(--font-weight-semibold);
+              font-size: var(--font-size);
+
+              .default-badge {
+                font-size: var(--font-size-xs);
+                padding: 2px 6px;
+                background-color: var(--button-background);
+                color: var(--button-text-color);
+                border-radius: var(--border-radius);
+                text-transform: uppercase;
+              }
+            }
+
+            .environment-type {
+              font-size: var(--font-size-sm);
+              color: var(--text-secondary-color);
+              text-transform: capitalize;
+              margin-top: 2px;
+            }
+
+            .environment-url {
+              font-size: var(--font-size-xs);
+              color: var(--text-secondary-color);
+              margin-top: 2px;
+            }
+          }
+        }
+
+        .environment-details {
+          padding: var(--spacing);
+          background-color: var(--box-alt-background-color);
+          border-top: 1px solid var(--box-border-color);
+
+          .ftp-info {
+            margin-bottom: var(--spacing);
+
+            .info-row {
+              display: flex;
+              gap: var(--spacing-half);
+              margin-bottom: var(--spacing-quarter);
+              font-size: var(--font-size-sm);
+
+              .label {
+                font-weight: var(--font-weight-semibold);
+                color: var(--text-secondary-color);
+                min-width: 100px;
+              }
+
+              .value {
+                font-family: var(--font-family-monospace);
+                color: var(--text-color);
+              }
+            }
+          }
+
+          .last-deployment {
+            margin-bottom: var(--spacing);
+            padding: var(--spacing-half);
+            background-color: var(--background-color);
+            border-radius: var(--border-radius);
+
+            .info-row {
+              display: flex;
+              gap: var(--spacing-half);
+              margin-bottom: var(--spacing-quarter);
+              font-size: var(--font-size-sm);
+
+              .label {
+                font-weight: var(--font-weight-semibold);
+                color: var(--text-secondary-color);
+              }
+            }
+
+            .status-badge {
+              display: inline-block;
+              padding: 2px 8px;
+              border-radius: var(--border-radius);
+              font-size: var(--font-size-xs);
+              font-weight: var(--font-weight-semibold);
+              text-transform: uppercase;
+
+              &.success {
+                background-color: rgba(40, 167, 69, 0.1);
+                color: #28a745;
+              }
+
+              &.failed {
+                background-color: rgba(220, 53, 69, 0.1);
+                color: #dc3545;
+              }
+
+              &.in-progress {
+                background-color: rgba(255, 193, 7, 0.1);
+                color: #ffc107;
+              }
+            }
+          }
+
+          .environment-actions {
+            display: flex;
+            gap: var(--spacing-half);
+            justify-content: flex-end;
+          }
+        }
+      }
+    }
+  }
+}
