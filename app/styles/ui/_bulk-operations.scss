@@ -1,0 +1,215 @@
+.bulk-operations-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--background-color);
+
+  .bulk-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing);
+    border-bottom: 1px solid var(--box-border-color);
+    background-color: var(--box-background-color);
+
+    .selection-controls {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-half);
+
+      button {
+        padding: 4px 12px;
+        font-size: var(--font-size-sm);
+      }
+
+      .selection-count {
+        margin-left: var(--spacing);
+        font-size: var(--font-size-sm);
+        color: var(--text-secondary-color);
+      }
+    }
+
+    .operation-buttons {
+      display: flex;
+      gap: var(--spacing-half);
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 12px;
+        font-size: var(--font-size-sm);
+
+        .octicon {
+          width: 14px;
+          height: 14px;
+        }
+
+        &.danger {
+          color: var(--error-color);
+          border-color: var(--error-color);
+
+          &:hover {
+            background-color: var(--error-color);
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
+  .bulk-progress {
+    padding: var(--spacing);
+    background-color: var(--box-selected-background-color);
+    border-bottom: 1px solid var(--box-border-color);
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-half);
+      font-size: var(--font-size-sm);
+
+      .operation-name {
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .progress-count {
+        color: var(--text-secondary-color);
+      }
+    }
+
+    .progress-bar {
+      height: 4px;
+      background-color: var(--box-border-color);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: var(--spacing-half);
+
+      .progress-fill {
+        height: 100%;
+        background-color: var(--link-button-color);
+        transition: width 0.3s ease;
+      }
+    }
+
+    .current-repo {
+      font-size: var(--font-size-xs);
+      color: var(--text-secondary-color);
+    }
+  }
+
+  .bulk-repository-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-half);
+
+    .repository-row {
+      display: flex;
+      align-items: center;
+      padding: var(--spacing-half) var(--spacing);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background-color: var(--box-hover-background-color);
+      }
+
+      &.selected {
+        background-color: var(--box-selected-background-color);
+      }
+
+      .checkbox-component {
+        margin-right: var(--spacing-half);
+      }
+
+      .octicon {
+        margin-right: var(--spacing-half);
+        color: var(--text-secondary-color);
+      }
+
+      .repo-name {
+        font-weight: var(--font-weight-semibold);
+        margin-right: var(--spacing);
+        min-width: 150px;
+      }
+
+      .repo-path {
+        flex: 1;
+        font-size: var(--font-size-xs);
+        color: var(--text-secondary-color);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .bulk-confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--background-color);
+    border: 1px solid var(--box-border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-double);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    min-width: 400px;
+
+    h3 {
+      margin: 0 0 var(--spacing) 0;
+      font-weight: var(--font-weight-semibold);
+    }
+
+    p {
+      margin: 0 0 var(--spacing-double) 0;
+      color: var(--text-secondary-color);
+      line-height: 1.5;
+    }
+
+    .confirm-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--spacing);
+
+      button {
+        padding: 6px 16px;
+      }
+
+      .confirm-button {
+        background-color: var(--link-button-color);
+        color: white;
+        border-color: var(--link-button-color);
+
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+}
+
+// Dark theme adjustments
+@include dark-theme {
+  .bulk-operations-panel {
+    .bulk-confirm-dialog {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+// High contrast adjustments
+@include high-contrast-theme {
+  .bulk-operations-panel {
+    .repository-row.selected {
+      outline: 2px solid currentColor;
+      outline-offset: -2px;
+    }
+
+    .bulk-confirm-dialog {
+      border-width: 2px;
+    }
+  }
+}

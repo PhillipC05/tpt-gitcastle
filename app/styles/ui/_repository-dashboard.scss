@@ -1,0 +1,206 @@
+.repository-health-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--background-color);
+  padding: var(--spacing-double);
+
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-double);
+    padding-bottom: var(--spacing);
+    border-bottom: 1px solid var(--box-border-color);
+
+    .dashboard-title {
+      h2 {
+        margin: 0 0 var(--spacing-half) 0;
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .dashboard-subtitle {
+        color: var(--text-secondary-color);
+        font-size: var(--font-size-sm);
+      }
+    }
+
+    .dashboard-actions {
+      display: flex;
+      gap: var(--spacing);
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-half);
+
+        .octicon {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+
+  .repository-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing);
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .repository-card {
+    background-color: var(--box-background-color);
+    border: 1px solid var(--box-border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing);
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      border-color: var(--link-button-color);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    &.needs-attention {
+      border-left: 4px solid var(--warning-color);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--spacing);
+
+      .repo-icon {
+        margin-right: var(--spacing-half);
+        color: var(--text-secondary-color);
+      }
+
+      .repo-name {
+        flex: 1;
+        font-weight: var(--font-weight-semibold);
+        font-size: var(--font-size-md);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .repo-loading {
+        margin-left: var(--spacing-half);
+      }
+    }
+
+    .card-indicators {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-half);
+      margin-bottom: var(--spacing);
+
+      .indicator {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 8px;
+        border-radius: var(--border-radius);
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semibold);
+
+        &.success {
+          background-color: var(--success-background-color);
+          color: var(--success-color);
+        }
+
+        &.warning {
+          background-color: var(--warning-background-color);
+          color: var(--warning-color);
+        }
+
+        &.info {
+          background-color: var(--info-background-color);
+          color: var(--info-color);
+        }
+
+        .octicon {
+          width: 12px;
+          height: 12px;
+        }
+      }
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: var(--spacing);
+      border-top: 1px solid var(--box-border-color);
+
+      .last-fetched {
+        font-size: var(--font-size-xs);
+        color: var(--text-secondary-color);
+      }
+
+      .sync-repo-button {
+        padding: 4px 8px;
+        font-size: var(--font-size-xs);
+
+        .octicon {
+          width: 12px;
+          height: 12px;
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+
+  .dashboard-loading,
+  .dashboard-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-secondary-color);
+
+    .octicon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: var(--spacing);
+      opacity: 0.5;
+    }
+
+    h3 {
+      margin: 0 0 var(--spacing-half) 0;
+      font-weight: var(--font-weight-semibold);
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}
+
+// Dark theme adjustments
+@include dark-theme {
+  .repository-health-dashboard {
+    .repository-card {
+      &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+}
+
+// High contrast adjustments
+@include high-contrast-theme {
+  .repository-health-dashboard {
+    .repository-card {
+      border-width: 2px;
+
+      &.needs-attention {
+        border-left-width: 6px;
+      }
+    }
+  }
+}
