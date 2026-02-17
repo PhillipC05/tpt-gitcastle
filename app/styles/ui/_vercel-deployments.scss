@@ -1,0 +1,258 @@
+.vercel-deployments {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--background-color);
+
+  .deployments-header {
+    padding: var(--spacing);
+    border-bottom: 1px solid var(--box-border-color);
+    background-color: var(--box-background-color);
+
+    h2 {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--font-size-md);
+
+      .octicon {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .error-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: var(--spacing);
+    background-color: var(--error-background-color);
+    color: var(--error-color);
+    border-bottom: 1px solid var(--box-border-color);
+
+    .octicon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .deployments-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .projects-panel {
+    width: 280px;
+    border-right: 1px solid var(--box-border-color);
+    overflow-y: auto;
+
+    .projects-list {
+      h3 {
+        margin: 0;
+        padding: var(--spacing);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        color: var(--text-secondary-color);
+        border-bottom: 1px solid var(--box-border-color);
+      }
+
+      .project-item {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-half);
+        padding: var(--spacing);
+        border-bottom: 1px solid var(--box-border-color);
+        cursor: pointer;
+
+        &:hover {
+          background-color: var(--box-hover-background-color);
+        }
+
+        &.selected {
+          background-color: var(--box-selected-background-color);
+          border-left: 3px solid var(--link-button-color);
+        }
+
+        .project-icon {
+          .octicon {
+            width: 16px;
+            height: 16px;
+            color: var(--link-button-color);
+          }
+        }
+
+        .project-info {
+          flex: 1;
+          min-width: 0;
+
+          .project-name {
+            display: block;
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-sm);
+          }
+
+          .project-framework {
+            display: block;
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary-color);
+          }
+        }
+      }
+    }
+
+    .empty-state {
+      padding: var(--spacing-double);
+      text-align: center;
+      color: var(--text-secondary-color);
+
+      .empty-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: var(--spacing);
+        opacity: 0.5;
+      }
+    }
+  }
+
+  .deployments-panel {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing);
+
+    .deployments-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing);
+
+      h3 {
+        margin: 0;
+        font-size: var(--font-size-md);
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        .octicon {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+
+    .deployment-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing);
+      padding: var(--spacing);
+      border: 1px solid var(--box-border-color);
+      border-radius: var(--border-radius);
+      margin-bottom: var(--spacing-half);
+      background-color: var(--box-background-color);
+
+      .deployment-status {
+        .octicon {
+          width: 16px;
+          height: 16px;
+        }
+
+        &.success {
+          color: var(--color-new);
+        }
+
+        &.building {
+          color: var(--warning-color);
+        }
+
+        &.error {
+          color: var(--error-color);
+        }
+
+        &.canceled {
+          color: var(--text-secondary-color);
+        }
+
+        &.queued {
+          color: var(--link-button-color);
+        }
+      }
+
+      .deployment-info {
+        flex: 1;
+        min-width: 0;
+
+        .deployment-url {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-weight: var(--font-weight-semibold);
+          color: var(--link-button-color);
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+
+          .octicon {
+            width: 12px;
+            height: 12px;
+          }
+        }
+
+        .deployment-meta {
+          display: flex;
+          gap: var(--spacing);
+          font-size: var(--font-size-xs);
+          color: var(--text-secondary-color);
+          margin-top: 4px;
+        }
+      }
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-secondary-color);
+
+      .empty-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: var(--spacing);
+        opacity: 0.5;
+      }
+
+      button {
+        margin-top: var(--spacing);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        .octicon {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+
+    .loading-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-secondary-color);
+
+      .loading {
+        margin-bottom: var(--spacing);
+      }
+    }
+  }
+}

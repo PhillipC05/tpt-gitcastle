@@ -2,6 +2,12 @@ import { GitProvider } from '../../models/git-provider'
 import { IGitProvider } from './provider-interface'
 import { gitHubProvider } from './github-provider'
 import { gitCastleProvider } from './gitcastle-provider'
+import { VercelProvider } from './vercel-provider'
+import { SupabaseProvider } from './supabase-provider'
+
+// Create singleton instances
+const vercelProvider = new VercelProvider()
+const supabaseProvider = new SupabaseProvider()
 
 /**
  * Provider factory - creates and manages provider instances
@@ -11,7 +17,10 @@ export class ProviderFactory {
     ['github', gitHubProvider],
     ['github-enterprise', gitHubProvider], // GHE uses same provider as GitHub.com
     ['gitcastle', gitCastleProvider],
+    ['vercel', vercelProvider],
+    ['supabase', supabaseProvider],
   ])
+
 
   /**
    * Get a provider instance for the given provider type

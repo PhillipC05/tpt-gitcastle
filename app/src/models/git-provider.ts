@@ -8,7 +8,10 @@ export type GitProvider =
   | 'gitlab'
   | 'gitea'
   | 'forgejo'
+  | 'vercel'
+  | 'supabase'
   | 'other'
+
 
 /**
  * Provider capabilities - what features each provider supports
@@ -34,6 +37,17 @@ export interface IProviderCapabilities {
   readonly supportsCI: boolean
   /** Supports copilot */
   readonly supportsCopilot: boolean
+  /** Supports serverless/edge functions */
+  readonly supportsServerless?: boolean
+  /** Supports database */
+  readonly supportsDatabase?: boolean
+  /** Supports storage */
+  readonly supportsStorage?: boolean
+  /** Supports realtime */
+  readonly supportsRealtime?: boolean
+  /** Supports auth */
+  readonly supportsAuth?: boolean
+
 }
 
 /**
@@ -127,6 +141,43 @@ export function getProviderCapabilities(provider: GitProvider): IProviderCapabil
         supportsCI: true, // Via Gitea Actions
         supportsCopilot: false,
       }
+    case 'vercel':
+      return {
+        supportsOAuth: true,
+        supportsTokenAuth: true,
+        supportsForking: false,
+        supportsPullRequests: false,
+        supportsIssues: false,
+        usesGitHubAPI: false,
+        supportsStarring: false,
+        supportsReleases: false,
+        supportsCI: false,
+        supportsCopilot: false,
+        supportsServerless: true,
+        supportsDatabase: false,
+        supportsStorage: false,
+        supportsRealtime: false,
+        supportsAuth: false,
+      }
+    case 'supabase':
+      return {
+        supportsOAuth: true,
+        supportsTokenAuth: true,
+        supportsForking: false,
+        supportsPullRequests: false,
+        supportsIssues: false,
+        usesGitHubAPI: false,
+        supportsStarring: false,
+        supportsReleases: false,
+        supportsCI: false,
+        supportsCopilot: false,
+        supportsServerless: true,
+        supportsDatabase: true,
+        supportsStorage: true,
+        supportsRealtime: true,
+        supportsAuth: true,
+      }
+
     default:
       return {
         supportsOAuth: false,
@@ -207,7 +258,28 @@ export function getProviderConfig(provider: GitProvider): IProviderConfig {
         icon: 'forgejo',
         brandColor: '#fb923c',
       }
+    case 'vercel':
+      return {
+        id: 'vercel',
+        displayName: 'Vercel',
+        defaultEndpoint: 'https://api.vercel.com',
+        isEnterprise: false,
+        capabilities,
+        icon: 'vercel',
+        brandColor: '#000000',
+      }
+    case 'supabase':
+      return {
+        id: 'supabase',
+        displayName: 'Supabase',
+        defaultEndpoint: 'https://api.supabase.com',
+        isEnterprise: false,
+        capabilities,
+        icon: 'supabase',
+        brandColor: '#3ECF8E',
+      }
     default:
+
       return {
         id: 'other',
         displayName: 'Other',
@@ -251,8 +323,17 @@ export function detectProviderFromEndpoint(endpoint: string): GitProvider {
     return 'forgejo'
   }
 
+  if (url.includes('vercel.com') || url.includes('vercel')) {
+    return 'vercel'
+  }
+
+  if (url.includes('supabase.com') || url.includes('supabase')) {
+    return 'supabase'
+  }
+
   // Default to other for unknown endpoints
   return 'other'
+
 }
 
 /**
@@ -279,8 +360,11 @@ export const SupportedProviders: GitProvider[] = [
   'gitlab',
   'gitea',
   'forgejo',
+  'vercel',
+  'supabase',
   'other',
 ]
+
 
 /**
  * List of enterprise/self-hosted providers
