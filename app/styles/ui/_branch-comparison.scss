@@ -1,0 +1,414 @@
+.branch-comparison {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--background-color);
+
+  .branch-selector {
+    padding: var(--spacing);
+    border-bottom: 1px solid var(--box-border-color);
+    background-color: var(--box-background-color);
+
+    .branch-inputs {
+      display: flex;
+      align-items: flex-end;
+      gap: var(--spacing);
+      margin-bottom: var(--spacing);
+
+      .branch-input {
+        flex: 1;
+
+        label {
+          display: block;
+          font-size: var(--font-size-xs);
+          font-weight: var(--font-weight-semibold);
+          margin-bottom: 4px;
+          color: var(--text-secondary-color);
+        }
+
+        select {
+          width: 100%;
+        }
+      }
+
+      .swap-branches {
+        padding: 8px;
+        background: transparent;
+        border: 1px solid var(--box-border-color);
+        border-radius: var(--border-radius);
+        color: var(--text-secondary-color);
+        cursor: pointer;
+
+        &:hover {
+          color: var(--link-button-color);
+          border-color: var(--link-button-color);
+        }
+
+        .octicon {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+
+    .compare-button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+
+      .octicon {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  .comparison-header {
+    padding: var(--spacing);
+    border-bottom: 1px solid var(--box-border-color);
+    background-color: var(--box-background-color);
+
+    .comparison-stats {
+      display: flex;
+      gap: var(--spacing-double);
+      margin-bottom: var(--spacing);
+
+      .stat {
+        text-align: center;
+
+        .count {
+          display: block;
+          font-size: var(--font-size-lg);
+          font-weight: var(--font-weight-semibold);
+        }
+
+        .label {
+          display: block;
+          font-size: var(--font-size-xs);
+          color: var(--text-secondary-color);
+        }
+
+        &.ahead .count {
+          color: var(--color-new);
+        }
+
+        &.behind .count {
+          color: var(--error-color);
+        }
+
+        &.additions .count {
+          color: var(--color-new);
+        }
+
+        &.deletions .count {
+          color: var(--error-color);
+        }
+      }
+    }
+
+    .merge-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: var(--spacing-half) var(--spacing);
+      background-color: var(--background-color);
+      border-radius: var(--border-radius);
+      margin-bottom: var(--spacing);
+      font-size: var(--font-size-sm);
+
+      .octicon {
+        width: 16px;
+        height: 16px;
+
+        &.success {
+          color: var(--color-new);
+        }
+
+        &.warning {
+          color: var(--error-color);
+        }
+      }
+    }
+
+    .comparison-actions {
+      display: flex;
+      gap: var(--spacing-half);
+
+      button {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+
+        .octicon {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+  }
+
+  .view-mode-selector {
+    padding: var(--spacing-half) var(--spacing);
+    border-bottom: 1px solid var(--box-border-color);
+    background-color: var(--box-background-color);
+
+    select {
+      width: 200px;
+    }
+  }
+
+  .comparison-content {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .comparison-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-secondary-color);
+
+    .loading {
+      margin-bottom: var(--spacing);
+    }
+  }
+
+  .commits-view {
+    display: flex;
+    height: 100%;
+
+    .commits-column {
+      flex: 1;
+      padding: var(--spacing);
+      overflow-y: auto;
+
+      &:first-child {
+        border-right: 1px solid var(--box-border-color);
+      }
+
+      h4 {
+        margin: 0 0 var(--spacing) 0;
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        color: var(--text-secondary-color);
+      }
+    }
+  }
+
+  .commit-list {
+    .commit-item {
+      padding: var(--spacing-half);
+      border: 1px solid var(--box-border-color);
+      border-radius: var(--border-radius);
+      margin-bottom: var(--spacing-half);
+      background-color: var(--box-background-color);
+      cursor: pointer;
+
+      &:hover {
+        border-color: var(--link-button-color);
+      }
+
+      &.selected {
+        border-color: var(--link-button-color);
+        background-color: var(--box-selected-background-color);
+      }
+
+      .commit-message {
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 4px;
+      }
+
+      .commit-meta {
+        display: flex;
+        gap: var(--spacing);
+        font-size: var(--font-size-xs);
+        color: var(--text-secondary-color);
+
+        .commit-sha {
+          font-family: var(--font-family-monospace);
+        }
+      }
+    }
+
+    &.empty {
+      text-align: center;
+      color: var(--text-secondary-color);
+      padding: var(--spacing-double);
+    }
+  }
+
+  .files-view {
+    padding: var(--spacing);
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing);
+      padding: var(--spacing-half);
+      border-bottom: 1px solid var(--box-border-color);
+
+      .file-status {
+        .octicon {
+          width: 14px;
+          height: 14px;
+        }
+      }
+
+      .file-path {
+        flex: 1;
+        font-size: var(--font-size-sm);
+        font-family: var(--font-family-monospace);
+      }
+
+      .file-stats {
+        display: flex;
+        gap: var(--spacing-half);
+        font-size: var(--font-size-xs);
+        font-family: var(--font-family-monospace);
+
+        .additions {
+          color: var(--color-new);
+        }
+
+        .deletions {
+          color: var(--error-color);
+        }
+      }
+
+      &.added .file-status {
+        color: var(--color-new);
+      }
+
+      &.modified .file-status {
+        color: var(--warning-color);
+      }
+
+      &.deleted .file-status {
+        color: var(--error-color);
+      }
+
+      &.renamed .file-status {
+        color: var(--link-button-color);
+      }
+    }
+
+    &.empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-secondary-color);
+
+      .empty-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: var(--spacing);
+        opacity: 0.5;
+      }
+    }
+  }
+
+  .graph-view {
+    padding: var(--spacing);
+
+    .graph-branches {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing);
+      margin-bottom: var(--spacing-double);
+
+      .branch-line {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing);
+        padding: var(--spacing);
+        background-color: var(--box-background-color);
+        border-radius: var(--border-radius);
+        border-left: 4px solid;
+
+        &.base {
+          border-left-color: var(--link-button-color);
+        }
+
+        &.compare {
+          border-left-color: var(--color-new);
+        }
+
+        .branch-name {
+          font-weight: var(--font-weight-semibold);
+          font-size: var(--font-size-sm);
+        }
+
+        .branch-sha {
+          font-family: var(--font-family-monospace);
+          font-size: var(--font-size-xs);
+          color: var(--text-secondary-color);
+        }
+      }
+
+      .merge-base {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: var(--spacing-half) var(--spacing);
+        color: var(--text-secondary-color);
+        font-size: var(--font-size-xs);
+
+        .octicon {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+
+    .graph-legend {
+      display: flex;
+      gap: var(--spacing-double);
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: var(--font-size-sm);
+
+        .dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+
+          &.ahead {
+            background-color: var(--color-new);
+          }
+
+          &.behind {
+            background-color: var(--error-color);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Dark theme adjustments
+@include dark-theme {
+  .branch-comparison {
+    .graph-view {
+      .graph-branches {
+        .branch-line {
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+}
