@@ -1,0 +1,201 @@
+// Multi-Remote Sync Manager Styles
+
+.multi-remote-manager {
+  min-width: 600px;
+  max-width: 800px;
+
+  .sync-status {
+    margin-bottom: var(--spacing-double);
+
+    .sync-progress {
+      .progress-bar {
+        height: 8px;
+        background-color: var(--box-border-color);
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: var(--spacing);
+
+        .progress-fill {
+          height: 100%;
+          background-color: var(--button-background);
+          transition: width 0.3s ease;
+        }
+      }
+
+      .progress-message {
+        font-size: var(--font-size-sm);
+        color: var(--text-secondary-color);
+      }
+    }
+
+    .last-sync-results {
+      h3 {
+        margin-bottom: var(--spacing);
+        font-size: var(--font-size);
+        font-weight: var(--font-weight-semibold);
+      }
+
+      .sync-result {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing);
+        padding: var(--spacing-half) 0;
+        font-size: var(--font-size-sm);
+
+        &.success {
+          color: var(--color-new);
+        }
+
+        &.error {
+          color: var(--color-deleted);
+        }
+
+        .result-remote {
+          font-weight: var(--font-weight-semibold);
+        }
+
+        .result-details {
+          color: var(--text-secondary-color);
+        }
+
+        .result-error {
+          color: var(--color-deleted);
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  .remotes-section {
+    margin-bottom: var(--spacing-double);
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing);
+
+      h3 {
+        font-size: var(--font-size);
+        font-weight: var(--font-weight-semibold);
+        margin: 0;
+      }
+    }
+
+    .add-remote-form {
+      background-color: var(--box-alt-background-color);
+      border: 1px solid var(--box-border-color);
+      border-radius: var(--border-radius);
+      padding: var(--spacing);
+      margin-bottom: var(--spacing);
+
+      .text-box-component {
+        margin-bottom: var(--spacing);
+      }
+
+      .account-selector {
+        margin-bottom: var(--spacing);
+
+        label {
+          display: block;
+          margin-bottom: var(--spacing-half);
+          font-size: var(--font-size-sm);
+          font-weight: var(--font-weight-semibold);
+        }
+
+        select {
+          width: 100%;
+          padding: var(--spacing-half);
+          border: 1px solid var(--box-border-color);
+          border-radius: var(--border-radius);
+          background-color: var(--background-color);
+        }
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--spacing);
+      }
+    }
+
+    .no-remotes {
+      text-align: center;
+      padding: var(--spacing-double);
+      color: var(--text-secondary-color);
+      font-style: italic;
+      border: 1px dashed var(--box-border-color);
+      border-radius: var(--border-radius);
+    }
+
+    .remote-list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: var(--spacing);
+      border-bottom: 1px solid var(--box-border-color);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .remote-info {
+        display: flex;
+        gap: var(--spacing);
+        flex: 1;
+
+        .remote-details {
+          flex: 1;
+
+          .remote-name-row {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-half);
+            margin-bottom: var(--spacing-quarter);
+
+            .remote-name {
+              font-weight: var(--font-weight-semibold);
+              font-size: var(--font-size);
+            }
+
+            .primary-badge {
+              font-size: var(--font-size-xs);
+              padding: 2px 6px;
+              background-color: var(--button-background);
+              color: var(--button-text-color);
+              border-radius: var(--border-radius);
+              text-transform: uppercase;
+            }
+          }
+
+          .remote-url {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary-color);
+            font-family: var(--font-family-monospace);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+          }
+
+          .remote-account {
+            font-size: var(--font-size-xs);
+            color: var(--text-secondary-color);
+            margin-top: var(--spacing-quarter);
+          }
+        }
+      }
+
+      .remote-actions {
+        display: flex;
+        gap: var(--spacing-half);
+      }
+    }
+  }
+
+  .sync-options {
+    padding: var(--spacing);
+    background-color: var(--box-alt-background-color);
+    border-radius: var(--border-radius);
+  }
+}
