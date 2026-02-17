@@ -1,20 +1,22 @@
 {
-  "name": "desktop",
-  "productName": "GitHub Desktop",
-  "bundleID": "com.github.GitHubClient",
-  "companyName": "GitHub, Inc.",
+  "name": "tpt-gitcastle",
+  "productName": "TPT GitCastle Desktop",
+  "bundleID": "com.phillipc05.tptgitcastle",
+  "companyName": "PhillipC05",
+
   "version": "3.5.5-beta5",
   "main": "./main.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/desktop/desktop.git"
+    "url": "https://github.com/PhillipC05/tpt-gitcastle.git"
   },
-  "description": "Simple collaboration from your desktop",
+  "description": "Multi-account Git client for GitHub, GitHub Enterprise, and TPT GitCastle",
   "author": {
-    "name": "GitHub, Inc.",
-    "email": "opensource+desktop@github.com",
-    "url": "https://desktop.github.com/"
+    "name": "PhillipC05",
+    "email": "your-email@example.com",
+    "url": "https://github.com/PhillipC05/tpt-gitcastle"
   },
+
   "license": "MIT",
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.2",
