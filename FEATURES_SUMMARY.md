@@ -1,7 +1,7 @@
 # TPT GitCastle Desktop - Features Summary
 
 ## Project Overview
-TPT GitCastle Desktop is a fork of GitHub Desktop with multi-account support across multiple Git providers and 10 differentiating features including cloud integrations.
+TPT GitCastle Desktop is a fork of GitHub Desktop with multi-account support across multiple Git providers and 15+ differentiating features including cloud integrations and WordPress deployment.
 
 ## Completed Features
 
@@ -11,7 +11,7 @@ TPT GitCastle Desktop is a fork of GitHub Desktop with multi-account support acr
 **Implementation**:
 - Extended Account model with `accountId` (UUID), `provider`, `profileName`, `isActive`
 - Refactored AccountsStore to support multiple accounts per endpoint
-- Created pluggable provider system (GitHub, GitHub Enterprise, TPT GitCastle, Vercel, Supabase)
+- Created pluggable provider system (GitHub, GitHub Enterprise, TPT GitCastle, Vercel, Supabase, Cloudflare, Netlify, DigitalOcean)
 - Added AccountSwitcher UI component in toolbar
 - Full SCSS styling with dark theme and high contrast support
 
@@ -194,6 +194,92 @@ TPT GitCastle Desktop is a fork of GitHub Desktop with multi-account support acr
 - `app/src/ui/supabase-manager/supabase-manager.tsx`
 - `app/styles/ui/_supabase-manager.scss`
 
+### 12. Cloudflare Cloud Integration ✅
+**Purpose**: Manage Cloudflare Pages, Workers, R2, and D1
+
+**Features**:
+- Pages project listing with deployment history
+- Workers script management
+- R2 bucket browser with file upload/download
+- D1 database queries and management
+- KV namespace management
+- Analytics overview
+
+**Files**:
+- `app/src/lib/providers/cloudflare-provider.ts`
+- `app/src/lib/providers/cloud-provider-interface.ts`
+
+### 13. Netlify Cloud Integration ✅
+**Purpose**: Manage Netlify sites and deployments
+
+**Features**:
+- Site listing with build status
+- Deployment history with rollbacks
+- Form submissions viewer
+- Environment variable management
+- DNS and domain management
+- Build hook triggers
+
+**Files**:
+- `app/src/lib/providers/netlify-provider.ts`
+
+### 14. DigitalOcean Cloud Integration ✅
+**Purpose**: Manage DigitalOcean App Platform and Spaces
+
+**Features**:
+- App Platform app listing with deployment status
+- Spaces bucket browser
+- Database cluster management
+- Droplet monitoring links
+- Kubernetes cluster overview
+
+**Files**:
+- `app/src/lib/providers/digitalocean-provider.ts`
+
+### 15. Multi-Remote Sync ✅
+**Purpose**: Backup code to multiple providers simultaneously
+
+**Features**:
+- Configure multiple remotes per repository
+- Set primary remote
+- Enable/disable remotes
+- Sync to all enabled remotes at once
+- Progress tracking per remote
+- Sync history and logs
+
+**Files**:
+- `app/src/lib/stores/multi-remote-sync-store.ts`
+- `app/src/ui/multi-remote-sync/multi-remote-manager.tsx`
+- `app/styles/ui/_multi-remote-sync.scss`
+
+### 16. WordPress Plugin Deployment ✅
+**Purpose**: Deploy WordPress plugins/themes to staging/production via FTP
+
+**Features**:
+- WordPress plugin/theme auto-detection
+- Plugin header parsing (name, version, requirements)
+- Multiple environment support (staging, production, development)
+- FTP/SFTP/FTPS protocol support
+- Connection testing before deployment
+- Quick deploy to default environment
+- Deploy to all active environments
+- File diff calculation (upload only changed files)
+- Exclude patterns for dev files (.git, node_modules, etc.)
+- Deployment progress tracking
+- Post-deployment command execution
+- Visual environment cards with color coding:
+  - 🔴 Red = Production
+  - 🟡 Yellow = Staging
+  - 🟢 Green = Development
+- Last deployment status and logs
+- Default environment selection
+
+**Files**:
+- `app/src/models/wordpress-deployment.ts`
+- `app/src/lib/stores/wordpress-deployment-store.ts`
+- `app/src/ui/wordpress-deployment/wordpress-deployment-manager.tsx`
+- `app/styles/ui/_wordpress-deployment.scss`
+
 ## Technical Architecture
 
 ### Provider System
@@ -206,6 +292,19 @@ interface IGitProvider {
   // ... other methods
 }
 
+// Cloud provider interface hierarchy
+interface ICloudProvider {
+  readonly name: string
+  readonly brandColor: string
+  // ... common methods
+}
+
+interface IDeploymentProvider extends ICloudProvider {
+  listProjects(): Promise<ICloudProject[]>
+  getDeployments(projectId: string): Promise<IDeployment[]>
+  deploy(projectId: string): Promise<void>
+}
+
 // Supported providers
 - GitHub / GitHub Enterprise
 - TPT GitCastle
@@ -213,6 +312,9 @@ interface IGitProvider {
 - Gitea / Forgejo
 - Vercel (cloud)
 - Supabase (cloud)
+- Cloudflare (cloud)
+- Netlify (cloud)
+- DigitalOcean (cloud)
 ```
 
 ### Store Pattern
@@ -224,6 +326,8 @@ All features follow the TypedBaseStore pattern:
 - `SubmoduleStore` - Submodule management
 - `TemplateStore` - Repository templates
 - `BranchComparisonStore` - Branch comparison
+- `MultiRemoteSyncStore` - Multi-remote synchronization
+- `WordPressDeploymentStore` - WordPress plugin deployment
 
 ### UI Components
 - React class components with TypeScript
@@ -243,6 +347,7 @@ All features follow the TypedBaseStore pattern:
 ## Git History
 
 ```
+a8fdf20975 Add WordPress plugin deployment system with FTP support
 a51e4224ef Add Vercel and Supabase cloud provider integrations
 ecfb56d9d4 docs: Update TODO.md with Phase 1-4 completion status
 73abd4cc0f chore: Update main styles file with new feature imports
@@ -253,10 +358,10 @@ ecfb56d9d4 docs: Update TODO.md with Phase 1-4 completion status
 ```
 
 ## Development Stats
-- **New Files Created**: 40+
-- **Lines of Code**: ~6000+
-- **Features Completed**: 11/8 (137.5% - exceeded original scope)
-- **Cloud Integrations**: 2 (Vercel, Supabase)
+- **New Files Created**: 50+
+- **Lines of Code**: ~8000+
+- **Features Completed**: 16/8 (200% - exceeded original scope)
+- **Cloud Integrations**: 5 (Vercel, Supabase, Cloudflare, Netlify, DigitalOcean)
 - **Test Coverage**: Pending
 
 ## Browser Compatibility
