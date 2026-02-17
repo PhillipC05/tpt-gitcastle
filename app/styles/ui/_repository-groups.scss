@@ -1,0 +1,208 @@
+.repository-groups-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--background-color);
+  border-right: 1px solid var(--box-border-color);
+
+  .groups-header {
+    padding: var(--spacing);
+    border-bottom: 1px solid var(--box-border-color);
+
+    h3 {
+      margin: 0;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-secondary-color);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .groups-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-half);
+  }
+
+  .repository-group {
+    margin-bottom: var(--spacing-half);
+    border-radius: var(--border-radius);
+    background-color: var(--box-background-color);
+    border: 1px solid var(--box-border-color);
+
+    &.drag-over {
+      border-color: var(--link-button-color);
+      background-color: var(--box-selected-background-color);
+    }
+
+    &.ungrouped {
+      opacity: 0.7;
+    }
+  }
+
+  .group-header {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-half) var(--spacing);
+    cursor: pointer;
+    user-select: none;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+
+    &:hover {
+      background-color: var(--box-hover-background-color);
+    }
+
+    &.editing {
+      padding: var(--spacing-half);
+    }
+
+    .group-color-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: var(--spacing-half);
+      flex-shrink: 0;
+    }
+
+    .group-name {
+      flex: 1;
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-sm);
+      color: var(--text-color);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .group-count {
+      font-size: var(--font-size-xs);
+      color: var(--text-secondary-color);
+      margin-left: var(--spacing-half);
+    }
+
+    .group-actions {
+      display: flex;
+      gap: var(--spacing-quarter);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    &:hover .group-actions {
+      opacity: 1;
+    }
+
+    .group-action,
+    .group-toggle {
+      padding: 2px;
+      min-width: auto;
+      height: auto;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary-color);
+
+      &:hover {
+        color: var(--text-color);
+        background-color: var(--box-hover-background-color);
+      }
+
+      .octicon {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+
+  .group-repositories {
+    padding: 0 0 var(--spacing-half) 0;
+  }
+
+  .group-empty {
+    padding: var(--spacing);
+    text-align: center;
+    color: var(--text-secondary-color);
+    font-size: var(--font-size-xs);
+    font-style: italic;
+  }
+
+  .repository-item {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-half) var(--spacing);
+    cursor: pointer;
+    margin: 0 var(--spacing-half);
+    border-radius: var(--border-radius);
+
+    &:hover {
+      background-color: var(--box-hover-background-color);
+    }
+
+    &.selected {
+      background-color: var(--box-selected-background-color);
+      color: var(--box-selected-text-color);
+    }
+
+    .octicon {
+      margin-right: var(--spacing-half);
+      color: var(--text-secondary-color);
+      flex-shrink: 0;
+    }
+
+    .repository-name {
+      font-size: var(--font-size-sm);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .create-group-button {
+    margin: var(--spacing);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-half);
+    padding: var(--spacing-half);
+    border: 1px dashed var(--box-border-color);
+    background: transparent;
+    color: var(--text-secondary-color);
+    font-size: var(--font-size-sm);
+
+    &:hover {
+      border-color: var(--link-button-color);
+      color: var(--link-button-color);
+    }
+
+    .octicon {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  .new-group-input {
+    padding: var(--spacing);
+  }
+}
+
+// Dark theme adjustments
+@include dark-theme {
+  .repository-groups-list {
+    .repository-group {
+      background-color: var(--box-background-color);
+    }
+  }
+}
+
+// High contrast adjustments
+@include high-contrast-theme {
+  .repository-groups-list {
+    .repository-group {
+      border-width: 2px;
+    }
+
+    .repository-item.selected {
+      outline: 2px solid currentColor;
+      outline-offset: -2px;
+    }
+  }
+}

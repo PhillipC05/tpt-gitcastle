@@ -4,7 +4,7 @@
   "bundleID": "com.phillipc05.tptgitcastle",
   "companyName": "PhillipC05",
 
-  "version": "3.5.5-beta5",
+  "version": "3.5.6-beta5",
   "main": "./main.js",
   "repository": {
     "type": "git",
