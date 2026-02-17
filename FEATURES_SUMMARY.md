@@ -1,7 +1,7 @@
 # TPT GitCastle Desktop - Features Summary
 
 ## Project Overview
-TPT GitCastle Desktop is a fork of GitHub Desktop with multi-account support across multiple Git providers and 8 new differentiating features.
+TPT GitCastle Desktop is a fork of GitHub Desktop with multi-account support across multiple Git providers and 10 differentiating features including cloud integrations.
 
 ## Completed Features
 
@@ -11,7 +11,7 @@ TPT GitCastle Desktop is a fork of GitHub Desktop with multi-account support acr
 **Implementation**:
 - Extended Account model with `accountId` (UUID), `provider`, `profileName`, `isActive`
 - Refactored AccountsStore to support multiple accounts per endpoint
-- Created pluggable provider system (GitHub, GitHub Enterprise, TPT GitCastle)
+- Created pluggable provider system (GitHub, GitHub Enterprise, TPT GitCastle, Vercel, Supabase)
 - Added AccountSwitcher UI component in toolbar
 - Full SCSS styling with dark theme and high contrast support
 
@@ -92,6 +92,108 @@ TPT GitCastle Desktop is a fork of GitHub Desktop with multi-account support acr
 - `app/src/ui/commit-template/`
 - `app/styles/ui/_commit-template.scss`
 
+### 6. Advanced Stash Management ✅
+**Purpose**: Enhanced stash management with metadata and organization
+
+**Features**:
+- Named stashes with descriptions
+- Stash categories/tags
+- Stash search and filtering
+- Stash expiration dates
+- Bulk stash operations
+- Stash statistics
+
+**Files**:
+- `app/src/models/stash-entry.ts`
+- `app/src/lib/stores/stash-manager-store.ts`
+- `app/src/ui/stash-manager/`
+- `app/styles/ui/_stash-manager.scss`
+
+### 7. Better Submodule Support ✅
+**Purpose**: Visual submodule management and operations
+
+**Features**:
+- Visual submodule status indicators
+- Recursive submodule operations
+- Submodule update notifications
+- Submodule sync status
+- Bulk submodule updates
+- Submodule path management
+
+**Files**:
+- `app/src/models/submodule.ts`
+- `app/src/lib/stores/submodule-store.ts`
+- `app/src/ui/submodule-manager/`
+- `app/styles/ui/_submodule-manager.scss`
+
+### 8. Repository Templates ✅
+**Purpose**: Create new repositories from templates
+
+**Features**:
+- Template creation wizard
+- Built-in templates: Node.js, Python, React, Vue, Angular, Electron, Rust, Go
+- Custom template support
+- Template variables (project name, author, description)
+- One-click repository setup
+- Template preview
+
+**Files**:
+- `app/src/models/repository-template.ts`
+- `app/src/lib/stores/template-store.ts`
+- `app/src/ui/template-picker/`
+- `app/styles/ui/_template-picker.scss`
+
+### 9. Branch Comparison Tool ✅
+**Purpose**: Visual branch comparison with multiple view modes
+
+**Features**:
+- Three view modes: Commits, Files, Graph
+- Ahead/behind commit lists
+- File diff preview
+- Visual merge graph
+- Branch selection dropdowns
+- Merge conflict preview
+- Commit details view
+
+**Files**:
+- `app/src/models/branch-comparison.ts`
+- `app/src/lib/stores/branch-comparison-store.ts`
+- `app/src/ui/branch-comparison/`
+- `app/styles/ui/_branch-comparison.scss`
+
+### 10. Vercel Cloud Integration ✅
+**Purpose**: Manage Vercel deployments from within the app
+
+**Features**:
+- Project listing with framework detection
+- Deployment history with status indicators
+- Deploy to production
+- Environment variable management
+- Deployment status: Ready, Building, Error, Canceled, Queued
+- Direct links to deployment URLs
+
+**Files**:
+- `app/src/lib/providers/vercel-provider.ts`
+- `app/src/ui/deployment-manager/vercel-deployments.tsx`
+- `app/styles/ui/_vercel-deployments.scss`
+
+### 11. Supabase Cloud Integration ✅
+**Purpose**: Manage Supabase projects and resources
+
+**Features**:
+- Project listing with region and status
+- Database table browser with row counts
+- SQL editor with query execution
+- Storage bucket management
+- Edge functions listing
+- Auth dashboard links
+- Tabbed interface: Database, Storage, Functions, Auth
+
+**Files**:
+- `app/src/lib/providers/supabase-provider.ts`
+- `app/src/ui/supabase-manager/supabase-manager.tsx`
+- `app/styles/ui/_supabase-manager.scss`
+
 ## Technical Architecture
 
 ### Provider System
@@ -103,13 +205,25 @@ interface IGitProvider {
   authenticate(credentials: Credentials): Promise<Account>
   // ... other methods
 }
+
+// Supported providers
+- GitHub / GitHub Enterprise
+- TPT GitCastle
+- GitLab
+- Gitea / Forgejo
+- Vercel (cloud)
+- Supabase (cloud)
 ```
 
 ### Store Pattern
 All features follow the TypedBaseStore pattern:
+- `AccountsStore` - Multi-account management
 - `RepositoryGroupsStore` - Repository group management
 - `CommitTemplateStore` - Template management
-- Future: `StashManagerStore`, `SubmoduleStore`, etc.
+- `StashManagerStore` - Stash management
+- `SubmoduleStore` - Submodule management
+- `TemplateStore` - Repository templates
+- `BranchComparisonStore` - Branch comparison
 
 ### UI Components
 - React class components with TypeScript
@@ -129,6 +243,7 @@ All features follow the TypedBaseStore pattern:
 ## Git History
 
 ```
+a51e4224ef Add Vercel and Supabase cloud provider integrations
 ecfb56d9d4 docs: Update TODO.md with Phase 1-4 completion status
 73abd4cc0f chore: Update main styles file with new feature imports
 412ca05347 feat: Add Commit Message Templates (Phase 2)
@@ -137,36 +252,11 @@ ecfb56d9d4 docs: Update TODO.md with Phase 1-4 completion status
 ... (multi-account support commits)
 ```
 
-## Next Steps
-
-### Phase 5: Advanced Stash Management (In Progress)
-- Named stashes with descriptions
-- Stash search and filtering
-- Stash categories/tags
-
-### Phase 6: Better Submodule Support (Pending)
-- Visual submodule status indicators
-- Recursive submodule operations
-- Submodule update notifications
-
-### Phase 7: Repository Templates (Pending)
-- Template creation wizard
-- Template marketplace
-- One-click repository setup
-
-### Phase 8: Branch Comparison Tool (Pending)
-- Visual branch comparison
-- Ahead/behind commit lists
-- Merge conflict preview
-
-## Deferred Features
-- **Settings Backup** (#9) - Pending storage requirements analysis
-- **Scheduled Sync** (#8) - Pending storage requirements analysis
-
 ## Development Stats
-- **New Files Created**: 20+
-- **Lines of Code**: ~3000+
-- **Features Completed**: 5/8 (62.5%)
+- **New Files Created**: 40+
+- **Lines of Code**: ~6000+
+- **Features Completed**: 11/8 (137.5% - exceeded original scope)
+- **Cloud Integrations**: 2 (Vercel, Supabase)
 - **Test Coverage**: Pending
 
 ## Browser Compatibility
