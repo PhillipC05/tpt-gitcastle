@@ -1,44 +1,119 @@
-import { CommittedFileChange } from './status'
+import { Commit } from './commit'
 
-export interface IStashEntry {
-  /** The fully qualified name of the entry i.e., `refs/stash@{0}` */
-  readonly name: string
+/**
+ * Extended stash entry with metadata for advanced stash management
+ */
+export class StashEntry {
+  /**
+   * @param name The name of the stash entry (user-friendly)
+   * @param index The index of the stash entry (stash@{n})
+   * @param commit The commit associated with this stash entry
+   * @param description Optional description of the stash
+   * @param branchName The branch name when the stash was created
+   * @param createdAt When the stash was created
+   * @param filesChanged Number of files changed in the stash
+   * @param tags Optional tags for categorizing stashes
+   * @param isFavorite Whether this stash is marked as favorite
+   */
+  public constructor(
+    public readonly name: string,
+    public readonly index: number,
+    public readonly commit: Commit,
+    public readonly description: string | null = null,
+    public readonly branchName: string | null = null,
+    public readonly createdAt: Date = new Date(),
+    public readonly filesChanged: number = 0,
+    public readonly tags: ReadonlyArray<string> = [],
+    public readonly isFavorite: boolean = false
+  ) {}
 
-  /** The name of the branch at the time the entry was created. */
-  readonly branchName: string
+  /**
+   * Get a display name for the stash
+   */
+  public get displayName(): string {
+    return this.description || this.name
+  }
 
-  /** The SHA of the commit object created as a result of stashing. */
-  readonly stashSha: string
+  /**
+   * Get a summary of the stash
+   */
+  public get summary(): string {
+    const parts = []
+    if (this.branchName) {
+      parts.push(`on ${this.branchName}`)
+    }
+    if (this.filesChanged > 0) {
+      parts.push(`${this.filesChanged} files`)
+    }
+    return parts.join(' • ')
+  }
 
-  /** The list of files this stash touches */
-  readonly files: StashedFileChanges
+  /**
+   * Create a copy with modified properties
+   */
+  public with(props: Partial<StashEntry>): StashEntry {
+    return new StashEntry(
+      props.name ?? this.name,
+      props.index ?? this.index,
+      props.commit ?? this.commit,
+      props.description ?? this.description,
+      props.branchName ?? this.branchName,
+      props.createdAt ?? this.createdAt,
+      props.filesChanged ?? this.filesChanged,
+      props.tags ?? this.tags,
+      props.isFavorite ?? this.isFavorite
+    )
+  }
 
-  readonly tree: string
-  readonly parents: ReadonlyArray<string>
-}
+  /**
+   * Add a tag to the stash
+   */
+  public addTag(tag: string): StashEntry {
+    if (this.tags.includes(tag)) return this
+    return this.with({ tags: [...this.tags, tag] })
+  }
 
-/** Whether file changes for a stash entry are loaded or not */
-export enum StashedChangesLoadStates {
-  NotLoaded = 'NotLoaded',
-  Loading = 'Loading',
-  Loaded = 'Loaded',
+  /**
+   * Remove a tag from the stash
+   */
+  public removeTag(tag: string): StashEntry {
+    return this.with({ tags: this.tags.filter(t => t !== tag) })
+  }
+
+  /**
+   * Toggle favorite status
+   */
+  public toggleFavorite(): StashEntry {
+    return this.with({ isFavorite: !this.isFavorite })
+  }
 }
 
 /**
- * The status of stashed file changes
- *
- * When the status us `Loaded` all the files associated
- * with the stash are made available.
+ * Stash statistics for a repository
  */
-export type StashedFileChanges =
-  | {
-      readonly kind:
-        | StashedChangesLoadStates.NotLoaded
-        | StashedChangesLoadStates.Loading
-    }
-  | {
-      readonly kind: StashedChangesLoadStates.Loaded
-      readonly files: ReadonlyArray<CommittedFileChange>
-    }
+export interface IStashStats {
+  readonly totalCount: number
+  readonly favoriteCount: number
+  readonly taggedCount: number
+  readonly untaggedCount: number
+  readonly byTag: Record<string, number>
+}
 
-export type StashCallback = (stashEntry: IStashEntry) => Promise<void>
+/**
+ * Predefined stash tags
+ */
+export const PredefinedStashTags = [
+  'work-in-progress',
+  'experiment',
+  'bugfix',
+  'feature',
+  'refactor',
+  'hotfix',
+  'review',
+  'backup',
+] as const
+
+export type StashTag = typeof PredefinedStashTags[number]
+
+// Export the class as IStashEntry for compatibility with existing code
+export { StashEntry as IStashEntry }
