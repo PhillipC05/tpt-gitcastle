@@ -4,10 +4,17 @@ import { gitHubProvider } from './github-provider'
 import { gitCastleProvider } from './gitcastle-provider'
 import { VercelProvider } from './vercel-provider'
 import { SupabaseProvider } from './supabase-provider'
+import { CloudflareProvider } from './cloudflare-provider'
+import { NetlifyProvider } from './netlify-provider'
+import { DigitalOceanProvider } from './digitalocean-provider'
 
 // Create singleton instances
 const vercelProvider = new VercelProvider()
 const supabaseProvider = new SupabaseProvider()
+const cloudflareProvider = new CloudflareProvider()
+const netlifyProvider = new NetlifyProvider()
+const digitalOceanProvider = new DigitalOceanProvider()
+
 
 /**
  * Provider factory - creates and manages provider instances
@@ -19,7 +26,11 @@ export class ProviderFactory {
     ['gitcastle', gitCastleProvider],
     ['vercel', vercelProvider],
     ['supabase', supabaseProvider],
+    ['cloudflare', cloudflareProvider as any],
+    ['netlify', netlifyProvider as any],
+    ['digitalocean', digitalOceanProvider as any],
   ])
+
 
 
   /**

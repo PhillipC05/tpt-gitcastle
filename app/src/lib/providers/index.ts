@@ -6,8 +6,12 @@
  */
 
 export * from './provider-interface'
+export * from './cloud-provider-interface'
 export * from './github-provider'
 export * from './gitcastle-provider'
 export * from './vercel-provider'
 export * from './supabase-provider'
+export * from './cloudflare-provider'
+export * from './netlify-provider'
+export * from './digitalocean-provider'
 export * from './provider-factory'

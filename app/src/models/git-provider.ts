@@ -10,8 +10,10 @@ export type GitProvider =
   | 'forgejo'
   | 'vercel'
   | 'supabase'
+  | 'cloudflare'
+  | 'netlify'
+  | 'digitalocean'
   | 'other'
-
 
 /**
  * Provider capabilities - what features each provider supports
@@ -47,7 +49,6 @@ export interface IProviderCapabilities {
   readonly supportsRealtime?: boolean
   /** Supports auth */
   readonly supportsAuth?: boolean
-
 }
 
 /**
@@ -99,7 +100,7 @@ export function getProviderCapabilities(provider: GitProvider): IProviderCapabil
         supportsStarring: true,
         supportsReleases: true,
         supportsCI: true,
-        supportsCopilot: false, // Depends on GHE version
+        supportsCopilot: false,
       }
     case 'gitcastle':
       return {
@@ -108,7 +109,7 @@ export function getProviderCapabilities(provider: GitProvider): IProviderCapabil
         supportsForking: true,
         supportsPullRequests: true,
         supportsIssues: true,
-        usesGitHubAPI: true, // GitCastle uses GitHub-compatible API
+        usesGitHubAPI: true,
         supportsStarring: true,
         supportsReleases: true,
         supportsCI: false,
@@ -119,10 +120,10 @@ export function getProviderCapabilities(provider: GitProvider): IProviderCapabil
         supportsOAuth: true,
         supportsTokenAuth: true,
         supportsForking: true,
-        supportsPullRequests: true, // Called "Merge Requests"
+        supportsPullRequests: true,
         supportsIssues: true,
-        usesGitHubAPI: false, // Uses GitLab API
-        supportsStarring: true, // Called "Stars"
+        usesGitHubAPI: false,
+        supportsStarring: true,
         supportsReleases: true,
         supportsCI: true,
         supportsCopilot: false,
@@ -135,10 +136,10 @@ export function getProviderCapabilities(provider: GitProvider): IProviderCapabil
         supportsForking: true,
         supportsPullRequests: true,
         supportsIssues: true,
-        usesGitHubAPI: true, // Gitea/Forgejo have GitHub-compatible API
+        usesGitHubAPI: true,
         supportsStarring: true,
         supportsReleases: true,
-        supportsCI: true, // Via Gitea Actions
+        supportsCI: true,
         supportsCopilot: false,
       }
     case 'vercel':
@@ -177,7 +178,60 @@ export function getProviderCapabilities(provider: GitProvider): IProviderCapabil
         supportsRealtime: true,
         supportsAuth: true,
       }
-
+    case 'cloudflare':
+      return {
+        supportsOAuth: true,
+        supportsTokenAuth: true,
+        supportsForking: false,
+        supportsPullRequests: false,
+        supportsIssues: false,
+        usesGitHubAPI: false,
+        supportsStarring: false,
+        supportsReleases: false,
+        supportsCI: false,
+        supportsCopilot: false,
+        supportsServerless: true,
+        supportsDatabase: true,
+        supportsStorage: true,
+        supportsRealtime: false,
+        supportsAuth: false,
+      }
+    case 'netlify':
+      return {
+        supportsOAuth: true,
+        supportsTokenAuth: true,
+        supportsForking: false,
+        supportsPullRequests: false,
+        supportsIssues: false,
+        usesGitHubAPI: false,
+        supportsStarring: false,
+        supportsReleases: false,
+        supportsCI: false,
+        supportsCopilot: false,
+        supportsServerless: false,
+        supportsDatabase: false,
+        supportsStorage: false,
+        supportsRealtime: false,
+        supportsAuth: false,
+      }
+    case 'digitalocean':
+      return {
+        supportsOAuth: false,
+        supportsTokenAuth: true,
+        supportsForking: false,
+        supportsPullRequests: false,
+        supportsIssues: false,
+        usesGitHubAPI: false,
+        supportsStarring: false,
+        supportsReleases: false,
+        supportsCI: false,
+        supportsCopilot: false,
+        supportsServerless: true,
+        supportsDatabase: true,
+        supportsStorage: true,
+        supportsRealtime: false,
+        supportsAuth: false,
+      }
     default:
       return {
         supportsOAuth: false,
@@ -244,7 +298,7 @@ export function getProviderConfig(provider: GitProvider): IProviderConfig {
       return {
         id: 'gitea',
         displayName: 'Gitea',
-        isEnterprise: true, // Self-hosted
+        isEnterprise: true,
         capabilities,
         icon: 'gitea',
         brandColor: '#609926',
@@ -253,7 +307,7 @@ export function getProviderConfig(provider: GitProvider): IProviderConfig {
       return {
         id: 'forgejo',
         displayName: 'Forgejo',
-        isEnterprise: true, // Self-hosted
+        isEnterprise: true,
         capabilities,
         icon: 'forgejo',
         brandColor: '#fb923c',
@@ -278,8 +332,37 @@ export function getProviderConfig(provider: GitProvider): IProviderConfig {
         icon: 'supabase',
         brandColor: '#3ECF8E',
       }
+    case 'cloudflare':
+      return {
+        id: 'cloudflare',
+        displayName: 'Cloudflare',
+        defaultEndpoint: 'https://api.cloudflare.com',
+        isEnterprise: false,
+        capabilities,
+        icon: 'cloudflare',
+        brandColor: '#F38020',
+      }
+    case 'netlify':
+      return {
+        id: 'netlify',
+        displayName: 'Netlify',
+        defaultEndpoint: 'https://api.netlify.com',
+        isEnterprise: false,
+        capabilities,
+        icon: 'netlify',
+        brandColor: '#00C7B7',
+      }
+    case 'digitalocean':
+      return {
+        id: 'digitalocean',
+        displayName: 'DigitalOcean',
+        defaultEndpoint: 'https://api.digitalocean.com',
+        isEnterprise: false,
+        capabilities,
+        icon: 'digitalocean',
+        brandColor: '#0080FF',
+      }
     default:
-
       return {
         id: 'other',
         displayName: 'Other',
@@ -309,12 +392,10 @@ export function detectProviderFromEndpoint(endpoint: string): GitProvider {
     return 'gitlab'
   }
 
-  // GitHub Enterprise detection
   if (url.includes('github') && (url.includes('/api/v3') || url.includes('api.github'))) {
     return 'github-enterprise'
   }
 
-  // Gitea/Forgejo detection
   if (url.includes('gitea')) {
     return 'gitea'
   }
@@ -331,9 +412,19 @@ export function detectProviderFromEndpoint(endpoint: string): GitProvider {
     return 'supabase'
   }
 
-  // Default to other for unknown endpoints
-  return 'other'
+  if (url.includes('cloudflare.com') || url.includes('cloudflare')) {
+    return 'cloudflare'
+  }
 
+  if (url.includes('netlify.com') || url.includes('netlify')) {
+    return 'netlify'
+  }
+
+  if (url.includes('digitalocean.com') || url.includes('digitalocean')) {
+    return 'digitalocean'
+  }
+
+  return 'other'
 }
 
 /**
@@ -362,9 +453,11 @@ export const SupportedProviders: GitProvider[] = [
   'forgejo',
   'vercel',
   'supabase',
+  'cloudflare',
+  'netlify',
+  'digitalocean',
   'other',
 ]
-
 
 /**
  * List of enterprise/self-hosted providers
