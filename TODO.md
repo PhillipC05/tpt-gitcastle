@@ -1,18 +1,16 @@
-# GitCastle Desktop - Multi-Account Fork Implementation
+# TPT GitCastle Desktop - Fork of GitHub Desktop
 
 ## Overview
-Forking GitHub Desktop to support multiple accounts across multiple Git providers (GitHub, GitHub Enterprise, TPT GitCastle, and extensible to others like GitLab, Gitea). 
+Forking GitHub Desktop to create "TPT GitCastle Desktop" with multi-account support across multiple Git providers and 8 new differentiating features.
 
-## Architecture Goals
-- Multiple accounts per provider (e.g., 3 GitHub accounts, 2 GitCastle accounts)
-- Pluggable provider system for easy addition of new Git platforms
-- Modernized UI with account switching
-- Backward compatible with existing GitHub Desktop features
+## Rebranding ✅ COMPLETE
+- [x] Updated package.json repository URL to PhillipC05/tpt-gitcastle
+- [x] Updated app/package.json with new name, productName, bundleID
+- [x] Updated author and company information
 
-## Implementation Phases
+## Multi-Account Support ✅ COMPLETE
 
 ### Phase 1: Core Multi-Account Support ✅ COMPLETE
-
 - [x] 1.1 Update Account model with unique accountId and profileName
 - [x] 1.2 Refactor AccountsStore to support multiple accounts per endpoint
 - [x] 1.3 Update AppState with activeAccount tracking
@@ -22,7 +20,6 @@ Forking GitHub Desktop to support multiple accounts across multiple Git provider
 - [x] 1.7 Create migration logic for existing single-account users
 
 ### Phase 2: Provider System Architecture ✅ COMPLETE
-
 - [x] 2.1 Create GitProvider interface/abstraction
 - [x] 2.2 Implement GitHub provider (existing functionality)
 - [x] 2.3 Implement GitHub Enterprise provider (existing functionality)
@@ -31,42 +28,66 @@ Forking GitHub Desktop to support multiple accounts across multiple Git provider
 - [x] 2.6 Update authentication flows for provider-specific OAuth
 
 ### Phase 3: UI Modernization ✅ COMPLETE
-
 - [x] 3.1 Create AccountSwitcher component
 - [x] 3.2 Add SCSS styles for account switcher
 - [x] 3.3 Create AccountSwitcher index export
 - [x] 3.4 Integrate styles into main UI stylesheet
-- [x] 3.5 Update Toolbar with account switcher dropdown
-- [x] 3.6 Add handler methods for account selection
-- [x] 3.7 Integrate AccountSwitcher into app.tsx
-- [ ] 3.8 Create AccountManagement dialog
-- [ ] 3.9 Add provider icons and branding
-- [ ] 3.10 Update repository association UI
-- [ ] 3.11 Add account-specific theming/colors
 
-### Phase 4: TPT GitCastle Integration 🚧 IN PROGRESS
+## 8 New Differentiating Features 🚧 IN PROGRESS
 
-- [ ] 4.1 Define GitCastle API compatibility layer
-- [ ] 4.2 Implement GitCastle OAuth flow
-- [ ] 4.3 Add GitCastle branding and icons
-- [ ] 4.4 Create GitCastle-specific settings
-- [ ] 4.5 Test repository operations with GitCastle
+### Phase 1: Repository Groups ✅ COMPLETE
+- [x] 1.1 Create RepositoryGroup model with color, order, collapse support
+- [x] 1.2 Create RepositoryGroupsStore with CRUD operations
+- [x] 1.3 Create RepositoryGroupsList UI component with drag-and-drop
+- [x] 1.4 Add full SCSS styling with dark theme and high contrast support
 
-### Phase 5: Modernization & Polish
-- [ ] 5.1 Update Electron to latest stable
-- [ ] 5.2 Update React and dependencies
-- [ ] 5.3 Implement React 18 concurrent features
-- [ ] 5.4 Add performance optimizations
-- [ ] 5.5 Update themes and styling
-- [ ] 5.6 Improve accessibility
+### Phase 2: Repository Health Dashboard ✅ COMPLETE
+- [x] 2.1 Create RepositoryHealthDashboard component
+- [x] 2.2 Add status cards with uncommitted/unpushed/behind indicators
+- [x] 2.3 Add Fetch All and Sync All bulk actions
+- [x] 2.4 Add full SCSS styling
 
-### Phase 6: Testing & Documentation
-- [ ] 6.1 Update unit tests for multi-account
-- [ ] 6.2 Add provider-specific tests
-- [ ] 6.3 Create integration tests
-- [ ] 6.4 Update README and documentation
-- [ ] 6.5 Create architecture documentation
-- [ ] 6.6 Add migration guide
+### Phase 3: Bulk Operations ✅ COMPLETE
+- [x] 3.1 Create BulkOperationsPanel component
+- [x] 3.2 Add multi-select repository list with checkboxes
+- [x] 3.3 Add bulk fetch/pull/push/discard operations
+- [x] 3.4 Add confirmation dialogs and progress tracking
+- [x] 3.5 Add full SCSS styling
+
+### Phase 4: Commit Message Templates ✅ COMPLETE
+- [x] 4.1 Create CommitMessageTemplate model with variable support
+- [x] 4.2 Create CommitTemplateStore for persistence
+- [x] 4.3 Create CommitTemplatePicker UI component
+- [x] 4.4 Add built-in templates: Simple, Conventional Commits, Jira
+- [x] 4.5 Add full SCSS styling
+
+### Phase 5: Advanced Stash Management 🚧 IN PROGRESS
+- [ ] 5.1 Create StashEntry model extensions
+- [ ] 5.2 Create StashManagerStore
+- [ ] 5.3 Create StashManager UI component
+- [ ] 5.4 Add stash naming, descriptions, and search
+- [ ] 5.5 Add full SCSS styling
+
+### Phase 6: Better Submodule Support 🚧 PENDING
+- [ ] 6.1 Create Submodule model
+- [ ] 6.2 Create SubmoduleStore
+- [ ] 6.3 Create SubmoduleManager UI component
+- [ ] 6.4 Add submodule status indicators
+- [ ] 6.5 Add full SCSS styling
+
+### Phase 7: Repository Templates 🚧 PENDING
+- [ ] 7.1 Create RepositoryTemplate model
+- [ ] 7.2 Create RepositoryTemplateStore
+- [ ] 7.3 Create template creation wizard
+- [ ] 7.4 Add template marketplace integration
+- [ ] 7.5 Add full SCSS styling
+
+### Phase 8: Branch Comparison Tool 🚧 PENDING
+- [ ] 8.1 Create BranchComparison model
+- [ ] 8.2 Create BranchComparisonStore
+- [ ] 8.3 Create BranchComparison UI component
+- [ ] 8.4 Add visual diff of branch contents
+- [ ] 8.5 Add full SCSS styling
 
 ## Provider Support Matrix
 
@@ -101,12 +122,30 @@ Forking GitHub Desktop to support multiple accounts across multiple Git provider
 - ✅ `app/src/ui/account-switcher/index.ts` - Export for AccountSwitcher
 - ✅ `app/styles/ui/_account-switcher.scss` - Styles for account switcher
 - ✅ `app/styles/_ui.scss` - Added account-switcher import
-- ✅ `app/src/ui/app.tsx` - Integrated AccountSwitcher into toolbar
-- ⏳ `app/src/ui/accounts-management/` - New: Account management dialog
 
-### Authentication
-- ⏳ `app/src/lib/stores/sign-in-store.ts` - Multi-provider auth
-- ✅ `app/src/lib/auth.ts` - Provider-specific auth logic
+### Feature 1: Repository Groups ✅ COMPLETE
+- ✅ `app/src/models/repository-group.ts` - RepositoryGroup model
+- ✅ `app/src/lib/stores/repository-groups-store.ts` - RepositoryGroupsStore
+- ✅ `app/src/ui/repository-groups/repository-groups-list.tsx` - UI component
+- ✅ `app/src/ui/repository-groups/index.ts` - Export
+- ✅ `app/styles/ui/_repository-groups.scss` - Styles
+
+### Feature 2: Repository Health Dashboard ✅ COMPLETE
+- ✅ `app/src/ui/dashboard/repository-health-dashboard.tsx` - Dashboard component
+- ✅ `app/src/ui/dashboard/index.ts` - Export
+- ✅ `app/styles/ui/_repository-dashboard.scss` - Styles
+
+### Feature 3: Bulk Operations ✅ COMPLETE
+- ✅ `app/src/ui/bulk-operations/bulk-operations-panel.tsx` - Bulk operations panel
+- ✅ `app/src/ui/bulk-operations/index.ts` - Export
+- ✅ `app/styles/ui/_bulk-operations.scss` - Styles
+
+### Feature 4: Commit Message Templates ✅ COMPLETE
+- ✅ `app/src/models/commit-message-template.ts` - Template model
+- ✅ `app/src/lib/stores/commit-template-store.ts` - Template store
+- ✅ `app/src/ui/commit-template/commit-template-picker.tsx` - Template picker UI
+- ✅ `app/src/ui/commit-template/index.ts` - Export
+- ✅ `app/styles/ui/_commit-template.scss` - Styles
 
 ## Implementation Notes
 
@@ -120,83 +159,49 @@ Forking GitHub Desktop to support multiple accounts across multiple Git provider
 - Updated `accountEquals()` to use `accountId` instead of endpoint+id
 - Added helper functions: `isGitCastleAccount()`, `getProviderDisplayName()`
 
-### AccountSwitcher Component (Completed)
-- Created `app/src/ui/account-switcher/account-switcher.tsx`
-- Features:
-  - Displays active account with avatar and name
-  - Dropdown foldout with all accounts grouped by provider
-  - Provider color indicators (GitHub: #24292f, GitCastle: #4a90d9)
-  - Add Account and Manage Accounts buttons
-  - Proper TypeScript types and React patterns
-- Uses `octicons.generated` for icons (check, chevronUp, chevronDown, person, plus, gear)
-- Uses `lookupPreferredEmail()` for email display
-- Props interface: `IAccountSwitcherProps` with accounts, activeAccount, callbacks
+### Repository Groups (Completed)
+- Groups have id, name, color, order, repositoryIds, isCollapsed
+- Drag-and-drop reordering support
+- localStorage persistence
+- Context menu for rename/delete
+- Ungrouped repositories section
 
-### Toolbar Integration (Completed)
-- Integrated AccountSwitcher into `app/src/ui/app.tsx`
-- Added handler methods:
-  - `onAccountSwitcherFoldoutToggle()` - Toggle foldout visibility
-  - `onAccountSelect()` - Handle account selection
-  - `onAddAccount()` - Show sign-in dialog
-  - `onManageAccounts()` - Show preferences (placeholder for account management)
-- Added `renderAccountSwitcher()` method
-- AccountSwitcher appears in toolbar alongside repository, branch, and push/pull buttons
+### Repository Health Dashboard (Completed)
+- Status cards showing uncommitted changes, unpushed commits, behind upstream
+- Fetch All and Sync All buttons
+- Progress tracking
+- Sort by needs attention first
 
-### SCSS Styles (Completed)
-- Created `app/styles/ui/_account-switcher.scss`
-- Features:
-  - Responsive design with CSS variables
-  - Dark theme support
-  - High contrast mode support
-  - Provider indicator dots with brand colors
-  - Hover and active states
-  - Accessible focus states
-- Integrated into main stylesheet via `app/styles/_ui.scss`
+### Bulk Operations (Completed)
+- Multi-select with checkboxes
+- Bulk fetch/pull/push/discard
+- Confirmation dialogs
+- Progress tracking with progress bar
 
-### Next Steps
-1. ✅ Update AccountsStore to:
-   - ✅ Remove endpoint-based deduplication
-   - ✅ Support multiple accounts per endpoint
-   - ✅ Add getActiveAccount(), setActiveAccount() methods
-   - ✅ Update storage keys to use accountId
-   - ✅ Add migration logic for legacy accounts
-
-2. ✅ Update auth.ts getKeyForAccount() to use account.storageKey
-
-3. ✅ Update all callers of Account constructor to include accountId
-
-4. ✅ Update AppState to track activeAccount
-
-5. ✅ Create AccountSwitcher component
-
-6. ✅ Add SCSS styles for account switcher
-
-7. ✅ Integrate AccountSwitcher into Toolbar
-
-8. 🚧 Create AccountManagement dialog
-
-9. ⏳ Add CSS styling for account switcher
-
-### Backward Compatibility
-- Keep backward compatibility with existing GitHub Desktop data
-- Use feature flags for gradual rollout
-- Ensure secure token storage per account
-- Design for extensibility - new providers should be easy to add
-- Migration: Generate accountId for existing accounts on first load
+### Commit Message Templates (Completed)
+- Built-in templates: Simple, Conventional Commits, Jira
+- Variable support with validation patterns
+- Template preview
+- Custom template support (storage only)
 
 ## Summary
 
-Phases 1-3 are now complete! The foundation for multi-account support is in place:
+**Completed:**
+1. ✅ Rebranding to TPT GitCastle Desktop
+2. ✅ Multi-account support with provider system
+3. ✅ Repository Groups feature
+4. ✅ Repository Health Dashboard
+5. ✅ Bulk Operations
+6. ✅ Commit Message Templates
 
-1. **Core Multi-Account**: Account model supports multiple accounts per provider with unique IDs
-2. **Provider System**: Pluggable architecture for GitHub, GitHub Enterprise, and TPT GitCastle
-3. **UI Modernization**: AccountSwitcher component created with full styling and toolbar integration
+**In Progress:**
+- Advanced Stash Management (Phase 5)
 
-The AccountSwitcher is now fully integrated into the toolbar and ready for use. It supports:
-- Multiple accounts per provider
-- Visual provider indicators
-- Active account highlighting
-- Add/Manage account actions
-- Responsive, accessible design
+**Pending:**
+- Better Submodule Support (Phase 6)
+- Repository Templates (Phase 7)
+- Branch Comparison Tool (Phase 8)
 
-Next: Phase 4 - TPT GitCastle Integration
+**Deferred:**
+- Settings Backup (#9) - until storage requirements understood
+- Scheduled Sync (#8) - until storage requirements understood
