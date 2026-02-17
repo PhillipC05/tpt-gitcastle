@@ -1,0 +1,40 @@
+﻿--- a/app/src/lib/app-state.ts
++++ b/app/src/lib/app-state.ts
+@@ -55,6 +55,11 @@ export enum SelectionType {
+ /** All of the shared app state. */
+ export interface IAppState {
+   readonly accounts: ReadonlyArray<Account>
++  /**
++   * The currently active account for operations.
++   * This is the account that will be used for API calls and git operations.
++   */
++  readonly activeAccount: Account | null
+   /**
+    * The current list of repositories tracked in the application
+    */
+@@ -334,6 +339,7 @@ export enum FoldoutType {
+   AppMenu,
+   AddMenu,
+   PushPull,
++  AccountSwitcher, // New: Account switcher foldout
+ }
+ 
+ export type AppMenuFoldout = {
+@@ -351,12 +357,17 @@ export type BranchFoldout = {
+   type: FoldoutType.Branch
+ }
+ 
++export type AccountSwitcherFoldout = {
++  type: FoldoutType.AccountSwitcher
++}
++
+ export type Foldout =
+   | { type: FoldoutType.Repository }
+   | { type: FoldoutType.AddMenu }
+   | BranchFoldout
+   | AppMenuFoldout
+   | { type: FoldoutType.PushPull }
++  | AccountSwitcherFoldout
+ 
+ export enum RepositorySectionTab {
+   Changes,

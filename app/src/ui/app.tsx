@@ -56,6 +56,8 @@ import {
   BranchDropdown,
   RevertProgress,
 } from './toolbar'
+import { AccountSwitcher } from './account-switcher'
+
 import { iconForRepository, OcticonSymbol } from './octicons'
 import * as octicons from './octicons/octicons.generated'
 import {
@@ -3376,6 +3378,49 @@ export class App extends React.Component<IAppProps, IAppState> {
     this.props.dispatcher.clearBanner()
   }
 
+  private onAccountSwitcherFoldoutToggle = () => {
+    const currentFoldout = this.state.currentFoldout
+
+    if (currentFoldout && currentFoldout.type === FoldoutType.AccountSwitcher) {
+      this.props.dispatcher.closeFoldout(FoldoutType.AccountSwitcher)
+    } else {
+      this.props.dispatcher.showFoldout({ type: FoldoutType.AccountSwitcher })
+    }
+  }
+
+  private onAccountSelect = (account: Account) => {
+    this.props.dispatcher.setActiveAccount(account)
+    this.props.dispatcher.closeFoldout(FoldoutType.AccountSwitcher)
+  }
+
+  private onAddAccount = () => {
+    this.props.dispatcher.showPopup({ type: PopupType.SignIn })
+    this.props.dispatcher.closeFoldout(FoldoutType.AccountSwitcher)
+  }
+
+  private onManageAccounts = () => {
+    // TODO: Show account management dialog when implemented
+    this.props.dispatcher.showPopup({ type: PopupType.Preferences, initialSelectedTab: PreferencesTab.Accounts })
+    this.props.dispatcher.closeFoldout(FoldoutType.AccountSwitcher)
+  }
+
+  private renderAccountSwitcher(): JSX.Element | null {
+    const currentFoldout = this.state.currentFoldout
+    const isFoldoutOpen = currentFoldout?.type === FoldoutType.AccountSwitcher
+
+    return (
+      <AccountSwitcher
+        accounts={this.state.accounts}
+        activeAccount={this.state.activeAccount}
+        onAccountSelect={this.onAccountSelect}
+        onAddAccount={this.onAddAccount}
+        onManageAccounts={this.onManageAccounts}
+        isFoldoutOpen={isFoldoutOpen}
+        onFoldoutToggle={this.onAccountSwitcherFoldoutToggle}
+      />
+    )
+  }
+
   private renderToolbar() {
     /**
      * No toolbar if we're in the blank slate view.
@@ -3393,9 +3438,11 @@ export class App extends React.Component<IAppProps, IAppState> {
         </div>
         {this.renderBranchToolbarButton()}
         {this.renderPushPullToolbarButton()}
+        {this.renderAccountSwitcher()}
       </Toolbar>
     )
   }
+
 
   private renderRepository() {
     const { accounts } = this.state

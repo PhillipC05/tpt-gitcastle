@@ -1,0 +1,225 @@
+// Account Switcher Styles
+// Styles for the account switcher component in the toolbar
+
+.account-switcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  .account-switcher-button {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-half) var(--spacing);
+    background: var(--background-color);
+    border: 1px solid var(--box-border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: var(--box-background-color);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .active-account-summary {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-half);
+
+      .avatar {
+        flex-shrink: 0;
+      }
+
+      .active-account-name {
+        font-weight: var(--font-weight-semibold);
+        color: var(--text-color);
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .octicon {
+        color: var(--text-secondary-color);
+        margin-left: var(--spacing-quarter);
+      }
+    }
+
+    .no-account {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-half);
+      color: var(--text-secondary-color);
+
+      .octicon {
+        color: var(--text-secondary-color);
+      }
+    }
+  }
+
+  // Foldout/Dropdown styles
+  .account-switcher-foldout {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: var(--spacing-half);
+    min-width: 280px;
+    max-width: 320px;
+    background: var(--background-color);
+    border: 1px solid var(--box-border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    z-index: 100;
+    overflow: hidden;
+
+    .account-list {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: var(--spacing-half) 0;
+
+      .provider-group {
+        margin-bottom: var(--spacing);
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .provider-header {
+          padding: var(--spacing-half) var(--spacing);
+          font-size: var(--font-size-sm);
+          font-weight: var(--font-weight-semibold);
+          color: var(--text-secondary-color);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      }
+    }
+
+    .account-list-item {
+      padding: var(--spacing-half) var(--spacing);
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background: var(--box-background-color);
+      }
+
+      &.active {
+        background: var(--box-selected-background-color);
+      }
+
+      .account-row {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-half);
+
+        .avatar {
+          flex-shrink: 0;
+        }
+
+        .account-info {
+          flex: 1;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+
+          .account-name {
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-color);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .account-provider {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-quarter);
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary-color);
+
+            .provider-indicator {
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              flex-shrink: 0;
+            }
+
+            .account-endpoint {
+              opacity: 0.7;
+            }
+          }
+
+          .account-login {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary-color);
+            opacity: 0.8;
+          }
+        }
+
+        .active-indicator {
+          color: var(--color-green);
+          flex-shrink: 0;
+          margin-left: auto;
+        }
+      }
+    }
+
+    .account-switcher-actions {
+      display: flex;
+      gap: var(--spacing-half);
+      padding: var(--spacing);
+      border-top: 1px solid var(--box-border-color);
+      background: var(--box-alt-background-color);
+
+      button {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-quarter);
+        padding: var(--spacing-half) var(--spacing);
+        font-size: var(--font-size-sm);
+
+        .octicon {
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+}
+
+// Dark theme adjustments
+.dark-theme {
+  .account-switcher {
+    .account-switcher-foldout {
+      background: var(--background-color);
+      border-color: var(--box-border-color);
+    }
+  }
+}
+
+// High contrast mode
+.high-contrast {
+  .account-switcher {
+    .account-switcher-button {
+      border-width: 2px;
+
+      &:focus {
+        outline: 2px solid var(--focus-color);
+        outline-offset: 2px;
+      }
+    }
+
+    .account-list-item {
+      &.active {
+        outline: 1px solid var(--focus-color);
+      }
+    }
+  }
+}

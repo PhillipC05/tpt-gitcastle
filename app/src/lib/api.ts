@@ -1,5 +1,7 @@
 import * as URL from 'url'
-import { Account } from '../models/account'
+import { Account, GitProvider } from '../models/account'
+import { v4 as uuidv4 } from 'uuid'
+
 
 import {
   request,
@@ -252,7 +254,8 @@ export interface IAPIIdentity {
  * not cover scenarios where privacy settings of a user control what information
  * is returned.
  */
-interface IAPIFullIdentity {
+export interface IAPIFullIdentity {
+
   readonly id: number
   readonly html_url: string
   readonly login: string
@@ -2235,7 +2238,16 @@ export async function fetchUser(
       api.fetchFeatureFlags(),
     ])
 
+    // Detect provider based on endpoint
+    let provider: GitProvider = 'github'
+    if (endpoint.includes('gitcastle') || endpoint.includes('tptsolutions')) {
+      provider = 'gitcastle'
+    } else if (endpoint !== getDotComAPIEndpoint()) {
+      provider = 'github-enterprise'
+    }
+
     return new Account(
+      uuidv4(), // accountId
       user.login,
       endpoint,
       token,
@@ -2243,7 +2255,10 @@ export async function fetchUser(
       user.avatar_url,
       user.id,
       user.name || user.login,
+      provider,
       user.plan?.name,
+      undefined, // profileName - will be set by user later
+      false, // isActive - will be set later
       copilotInfo?.copilotEndpoint,
       copilotInfo?.isCopilotDesktopEnabled,
       features
@@ -2253,6 +2268,7 @@ export async function fetchUser(
     throw e
   }
 }
+
 
 /**
  * Map a repository's URL to the endpoint associated with it. For example:

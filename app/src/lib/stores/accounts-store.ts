@@ -1,11 +1,12 @@
 import { IDataStore, ISecureStore } from './stores'
 import { getKeyForAccount } from '../auth'
-import { Account, isDotComAccount } from '../../models/account'
+import { Account, isDotComAccount, GitProvider } from '../../models/account'
 import { fetchUser, EmailVisibility, getEnterpriseAPIURL } from '../api'
 import { fatalError } from '../fatal-error'
 import { TypedBaseStore } from './base-store'
 import { isGHE } from '../endpoint-capabilities'
 import { compare, compareDescending } from '../compare'
+import { v4 as uuidv4 } from 'uuid'
 
 // Ensure that GitHub.com accounts appear first followed by Enterprise
 // accounts, sorted by the order in which they were added.
@@ -52,6 +53,7 @@ function isKeyChainError(e: any) {
 
 /** The data-only interface for storage. */
 interface IAccount {
+  readonly accountId: string
   readonly token: string
   readonly login: string
   readonly endpoint: string
@@ -59,7 +61,10 @@ interface IAccount {
   readonly avatarURL: string
   readonly id: number
   readonly name: string
+  readonly provider: GitProvider
   readonly plan?: string
+  readonly profileName?: string
+  readonly isActive: boolean
 }
 
 /** The store for logged in accounts. */
@@ -90,6 +95,29 @@ export class AccountsStore extends TypedBaseStore<ReadonlyArray<Account>> {
   }
 
   /**
+   * Get the currently active account.
+   */
+  public async getActiveAccount(): Promise<Account | null> {
+    await this.loadingPromise
+
+    const activeAccount = this.accounts.find(a => a.isActive)
+    return activeAccount || this.accounts[0] || null
+  }
+
+  /**
+   * Set the active account.
+   */
+  public async setActiveAccount(account: Account): Promise<void> {
+    await this.loadingPromise
+
+    this.accounts = this.accounts.map(a => 
+      a.accountId === account.accountId ? a.withActive(true) : a.withActive(false)
+    )
+
+    this.save()
+  }
+
+  /**
    * Add the account to the store.
    */
   public async addAccount(account: Account): Promise<Account | null> {
@@ -113,13 +141,13 @@ export class AccountsStore extends TypedBaseStore<ReadonlyArray<Account>> {
       return null
     }
 
-    const accountsByEndpoint = this.accounts.reduce(
-      (map, x) => map.set(x.endpoint, x),
-      new Map<string, Account>()
-    )
-    accountsByEndpoint.set(account.endpoint, account)
+    // Add new account to the list (no deduplication - allow multiple accounts per endpoint)
+    this.accounts = sortAccounts([...this.accounts, account])
 
-    this.accounts = sortAccounts([...accountsByEndpoint.values()])
+    // If this is the first account, make it active
+    if (this.accounts.length === 1) {
+      this.accounts = this.accounts.map(a => a.withActive(true))
+    }
 
     this.save()
     return account
@@ -172,8 +200,29 @@ export class AccountsStore extends TypedBaseStore<ReadonlyArray<Account>> {
       return
     }
 
+    const wasActive = account.isActive
     this.accounts = this.accounts.filter(
-      a => !(a.endpoint === account.endpoint && a.id === account.id)
+      a => a.accountId !== account.accountId
+    )
+
+    // If we removed the active account and there are other accounts, make the first one active
+    if (wasActive && this.accounts.length > 0) {
+      this.accounts = this.accounts.map((a, index) => 
+        index === 0 ? a.withActive(true) : a
+      )
+    }
+
+    this.save()
+  }
+
+  /**
+   * Update an existing account's profile name.
+   */
+  public async updateProfileName(account: Account, profileName: string): Promise<void> {
+    await this.loadingPromise
+
+    this.accounts = this.accounts.map(a => 
+      a.accountId === account.accountId ? a.withProfileName(profileName) : a
     )
 
     this.save()
@@ -217,7 +266,14 @@ export class AccountsStore extends TypedBaseStore<ReadonlyArray<Account>> {
 
     const accountsWithTokens = []
     for (const account of rawAccounts) {
+      // Migration: Generate accountId for legacy accounts without one
+      const accountId = account.accountId || uuidv4()
+      
+      // Migration: Determine provider from endpoint if not set
+      const provider = account.provider || this.inferProvider(account.endpoint)
+
       const accountWithoutToken = new Account(
+        accountId,
         account.login,
         account.endpoint,
         '',
@@ -225,7 +281,10 @@ export class AccountsStore extends TypedBaseStore<ReadonlyArray<Account>> {
         account.avatarURL,
         account.id,
         account.name,
-        account.plan
+        provider,
+        account.plan,
+        account.profileName,
+        account.isActive || false
       )
 
       const key = getKeyForAccount(accountWithoutToken)
@@ -240,12 +299,38 @@ export class AccountsStore extends TypedBaseStore<ReadonlyArray<Account>> {
     }
 
     this.accounts = sortAccounts(accountsWithTokens)
+    
+    // If no account is active, make the first one active
+    if (this.accounts.length > 0 && !this.accounts.some(a => a.isActive)) {
+      this.accounts = this.accounts.map((a, index) => 
+        index === 0 ? a.withActive(true) : a
+      )
+    }
+    
     // If any account was migrated, make sure to persist the new value
     if (migratedAccounts !== null) {
       this.save() // Save already emits an update
     } else {
       this.emitUpdate(this.accounts)
     }
+  }
+
+  /**
+   * Infer the Git provider from the endpoint URL.
+   * Used for migration of legacy accounts.
+   */
+  private inferProvider(endpoint: string): GitProvider {
+    if (endpoint.includes('github.com') && !endpoint.includes('api.github.com')) {
+      return 'github'
+    }
+    if (endpoint.includes('gitcastle.tptsolutions.co.nz')) {
+      return 'gitcastle'
+    }
+    if (endpoint.includes('gitlab')) {
+      return 'gitlab'
+    }
+    // Default to github-enterprise for other endpoints
+    return 'github-enterprise'
   }
 
   private save() {

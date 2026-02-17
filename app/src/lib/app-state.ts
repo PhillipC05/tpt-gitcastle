@@ -79,8 +79,14 @@ export type PossibleSelections =
 export interface IAppState {
   readonly accounts: ReadonlyArray<Account>
   /**
+   * The currently active account for operations.
+   * This is the account that will be used for API calls and git operations.
+   */
+  readonly activeAccount: Account | null
+  /**
    * The current list of repositories tracked in the application
    */
+
   readonly repositories: ReadonlyArray<Repository | CloningRepository>
 
   /**
@@ -396,7 +402,9 @@ export enum FoldoutType {
   AppMenu,
   AddMenu,
   PushPull,
+  AccountSwitcher, // New: Account switcher foldout
 }
+
 
 export type AppMenuFoldout = {
   type: FoldoutType.AppMenu
@@ -413,14 +421,21 @@ export type BranchFoldout = {
   type: FoldoutType.Branch
 }
 
+export type AccountSwitcherFoldout = {
+  type: FoldoutType.AccountSwitcher
+}
+
 export type Foldout =
+
   | { type: FoldoutType.Repository }
   | { type: FoldoutType.AddMenu }
   | BranchFoldout
   | AppMenuFoldout
   | { type: FoldoutType.PushPull }
+  | AccountSwitcherFoldout
 
 export enum RepositorySectionTab {
+
   Changes,
   History,
 }
